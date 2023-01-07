@@ -5,56 +5,60 @@ const $slider = document.querySelector(".slider");
 const $progress = document.querySelector(".progress");
 const $$buttons = document.querySelectorAll(".slider-buttons button");
 
-let currentCardIdx = 0;
 const cardTotal = 5;
+let position = 0;
 handleSliderButtons();
+
+function setScrollBy() {
+  if (document.documentElement.clientWidth <= 600) {
+    $slider.style.setProperty("--scrollBy", "109%");
+  } else if (document.documentElement.clientWidth <= 760) {
+    $slider.style.setProperty("--scrollBy", "105%");
+  } else {
+    $slider.style.setProperty("--scrollBy", "77%");
+  }
+}
+
+new ResizeObserver(setScrollBy).observe(document.documentElement);
+setScrollBy();
 
 $leftBtn.onclick = slideRight;
 $rightBtn.onclick = slideLeft;
 
+function slideRight() {
+  if (position === 0) return;
+
+  position += 1;
+  slide();
+  handleProgressBar();
+  handleSliderButtons();
+}
+
+function slideLeft() {
+  if (position === -4) return;
+
+  position += -1;
+  slide();
+  handleProgressBar();
+  handleSliderButtons();
+}
+
+function slide() {
+  $slider.style.setProperty("--position", position);
+}
+
+function handleProgressBar() {
+  let progressWidth = ((position * -1) / (cardTotal - 1)) * 100;
+  $progress.style.width = `${progressWidth}%`;
+}
+
 function handleSliderButtons() {
-  if (currentCardIdx === 0) {
+  if (position === 0) {
     $$buttons[0].disabled = true;
-  } else if (currentCardIdx === cardTotal - 1) {
+  } else if (position === -4) {
     $$buttons[1].disabled = true;
   } else {
     $$buttons[0].disabled = false;
     $$buttons[1].disabled = false;
   }
-}
-
-function slideRight() {
-  if (currentCardIdx === 0) return;
-
-  const $nextCard = $$cards[--currentCardIdx];
-  $nextCard.scrollIntoView({
-    behavior: "smooth",
-    block: "nearest",
-    inline: "center",
-  });
-  decreaseProgressBar();
-  handleSliderButtons();
-}
-
-function slideLeft() {
-  if (currentCardIdx === cardTotal - 1) return;
-
-  const $nextCard = $$cards[++currentCardIdx];
-  $nextCard.scrollIntoView({
-    behavior: "smooth",
-    block: "nearest",
-    inline: "center",
-  });
-  increaseProgressBar();
-  handleSliderButtons();
-}
-
-function increaseProgressBar() {
-  const progressWidth = (currentCardIdx / (cardTotal - 1)) * 100;
-  $progress.style.width = `${progressWidth}%`;
-}
-
-function decreaseProgressBar() {
-  const progressWidth = (currentCardIdx / (cardTotal - 1)) * 100;
-  $progress.style.width = `${progressWidth}%`;
 }

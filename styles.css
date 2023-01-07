@@ -82,16 +82,10 @@ body {
 
 .slider {
   --position: 0;
-  --scrollBy: 0;
+  --scrollBy: 77%;
   display: flex;
   transform: translateX(calc(var(--scrollBy) * var(--position)));
-  transition-duration: 750ms;
-  overflow-y: auto;
-  /* Hide scrollbar for IE, Edge add Firefox */
-  -ms-overflow-style: none;
-  scrollbar-width: none; /* Firefox */
-
-  /* border: 1px solid; */
+  transition: transform 750ms;
 }
 
 .slider::-webkit-scrollbar {
@@ -99,24 +93,9 @@ body {
 }
 
 .card {
-  /* flex: 0 0 40vw; */
   flex: 0 0 72%;
   margin-right: 5%;
-  /* position: relative; */
-  /* max-width: 88rem; */
 }
-
-/* .card:nth-child(3)::before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: red;
-  z-index: 99;
-} */
 
 .card__img {
   width: 100%;
@@ -212,8 +191,8 @@ button:disabled {
     row-gap: 7rem;
   }
 
-  .slider {
-    column-gap: 4rem;
+  .card {
+    margin-right: 9%;
   }
 }
 
